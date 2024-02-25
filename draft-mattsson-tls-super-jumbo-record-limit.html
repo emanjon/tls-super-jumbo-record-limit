@@ -8,9 +8,9 @@
 <meta content="John Preuß Mattsson" name="author">
 <meta content="Hannes Tschofenig" name="author">
 <meta content="Michael Tüxen" name="author">
-<meta content='
-       An extension "super_jumbo_record_size_limit" to (Datagram) Transport Layer Security (TLS) is defined that allows endpoints to negotiate a 2 16  bytes maximum size of protected records. This is larger than the default limit of around 2 14  bytes. 
-    ' name="description">
+<meta content="
+       RFC 8449 defines a Record Size Limit Extension for TLS allowing endpoints to negotiate a record size limit smaller than the protocol-defined maximum record size, which is around 2 14  bytes. This document specifies a TLS flags extension to be used in combination with the Record Size Limit Extension allowing endpoints to use a record size limit larger than the protocol-defined maximum record size, but not more than about 2 16  bytes. 
+    " name="description">
 <meta content="xml2rfc 3.19.4" name="generator">
 <meta content="next generation" name="keyword">
 <meta content="unicorn" name="keyword">
@@ -1033,7 +1033,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Preuß Mattsson, et al.</td>
-<td class="center">Expires 27 August 2024</td>
+<td class="center">Expires 28 August 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1046,12 +1046,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-mattsson-tls-super-jumbo-record-limit-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-02-24" class="published">24 February 2024</time>
+<time datetime="2024-02-25" class="published">25 February 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-08-27">27 August 2024</time></dd>
+<dd class="expires"><time datetime="2024-08-28">28 August 2024</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1072,7 +1072,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <h1 id="title">Super Jumbo Record Size Limit Extension for TLS 1.3</h1>
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
-<p id="section-abstract-1">An extension "super_jumbo_record_size_limit" to (Datagram) Transport Layer Security (TLS) is defined that allows endpoints to negotiate a 2<sup>16</sup> bytes maximum size of protected records. This is larger than the default limit of around 2<sup>14</sup> bytes.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+<p id="section-abstract-1">RFC 8449 defines a Record Size Limit Extension for TLS allowing endpoints to negotiate a record size limit smaller than the protocol-defined maximum record size, which is around 2<sup>14</sup> bytes. This document specifies a TLS flags extension to be used in combination with the Record Size Limit Extension allowing endpoints to use a record size limit larger than the protocol-defined maximum record size, but not more than about 2<sup>16</sup> bytes.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </section>
 <section class="note rfcEditorRemove" id="section-note.1">
       <h2 id="name-about-this-document">
@@ -1109,7 +1109,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 27 August 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 28 August 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1145,7 +1145,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
             <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-terminology" class="internal xref">Terminology</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
-            <p id="section-toc.1-1.3.1" class="keepWithNext"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-the-super_jumbo_record_size" class="internal xref">The "super_jumbo_record_size_limit" Extension</a></p>
+            <p id="section-toc.1-1.3.1" class="keepWithNext"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-the-super_jumbo_record_size" class="internal xref">The "super_jumbo_record_size_limit" Flags Extension</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
             <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-aead-limits" class="internal xref">AEAD Limits</a></p>
@@ -1182,10 +1182,10 @@ svg :is([fill="white"], [fill^="#fff"]) {
       <h2 id="name-introduction">
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
-<p id="section-1-1">The records in all version of TLS records has an uint16 length field that could theoretically allow records 65536 octets in size. TLS does however have a lower protocol-defined limit for maximum plaintext record size. For TLS 1.2 <span>[<a href="#RFC5246" class="cite xref">RFC5246</a>]</span>, that limit is 2<sup>14</sup> = 16384 octets. TLS 1.3 <span>[<a href="#RFC8446" class="cite xref">RFC8446</a>]</span> uses a limit of 2<sup>14</sup> + 1 = 16385 octets. In addition, TLS 1.2 allow expansion from compression and protection up to 2048 octets (though typically this expansion is only 16 octets). TLS 1.3 reduces the allowance for expansion to 256 octets.<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-1">The records in all version of TLS records has an uint16 length field that could theoretically allow records 65535 octets in size. TLS does however have a lower protocol-defined limit for maximum plaintext record size. For TLS 1.2 <span>[<a href="#RFC5246" class="cite xref">RFC5246</a>]</span>, that limit is 2<sup>14</sup> = 16384 octets. TLS 1.3 <span>[<a href="#RFC8446" class="cite xref">RFC8446</a>]</span> uses a limit of 2<sup>14</sup> + 1 = 16385 octets. In addition, TLS 1.2 allow expansion from compression and protection up to 2048 octets (though typically this expansion is only 16 octets). TLS 1.3 reduces the allowance for expansion to 256 octets.<a href="#section-1-1" class="pilcrow">¶</a></p>
 <p id="section-1-2">The "record_size_limit" extension <span>[<a href="#RFC8449" class="cite xref">RFC8449</a>]</span> enables endpoints to negotiate a lower limit for the maximum plaintext record size, but does not allow endpoints to increase the limits enforced by TLS 1.3 <span>[<a href="#RFC8446" class="cite xref">RFC8446</a>]</span>, TLS 1.2 <span>[<a href="#RFC5246" class="cite xref">RFC5246</a>]</span>, DTLS 1.3 <span>[<a href="#RFC9147" class="cite xref">RFC9147</a>]</span>, and DTLS 1.2 <span>[<a href="#RFC6347" class="cite xref">RFC6347</a>]</span>.<a href="#section-1-2" class="pilcrow">¶</a></p>
 <p id="section-1-3">In some use cases such as DTLS over SCTP <span>[<a href="#RFC6083" class="cite xref">RFC6083</a>]</span> the 2<sup>14</sup> bytes limit is a severe limitation.<a href="#section-1-3" class="pilcrow">¶</a></p>
-<p id="section-1-4">This document defines a "super_jumbo_record_size_limit" extension (<a href="#ex" class="auto internal xref">Section 3</a>). The extension allows endpoints to negotiate a 2<sup>16</sup> bytes maximum size of protected records, which is larger than the default limit of 2<sup>14</sup> bytes. This extension is defined for version 1.3 of TLS and DTLS.<a href="#section-1-4" class="pilcrow">¶</a></p>
+<p id="section-1-4">This document defines a "super_jumbo_record_size_limit" flags extension (<a href="#ex" class="auto internal xref">Section 3</a>). The Record Size Limit Extension for TLS as specified in <span>[<a href="#RFC8449" class="cite xref">RFC8449</a>]</span> used in combination with the flags extension defined in this document allows endpoints to negotiate a record size limit larger than the protocol-defined maximum record size. This can be used to bump up the maximum size of protected records to 2<sup>16</sup>-1 bytes, which is larger than the default limit of 2<sup>14</sup> bytes. This extension is defined for version 1.3 of TLS and DTLS.<a href="#section-1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="terminology">
@@ -1202,7 +1202,7 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
 <div id="ex">
 <section id="section-3">
       <h2 id="name-the-super_jumbo_record_size">
-<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-the-super_jumbo_record_size" class="section-name selfRef">The "super_jumbo_record_size_limit" Extension</a>
+<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-the-super_jumbo_record_size" class="section-name selfRef">The "super_jumbo_record_size_limit" Flags Extension</a>
       </h2>
 <p id="section-3-1">The "super_jumbo_record_size_limit" extension does not have any ExtensionData. When the "super_jumbo_record_size_limit" extension is negotiated, an endpoint <span class="bcp14">MUST</span> be prepared to accept protected records with ciphertexts of length 2<sup>16</sup> bytes and protected record with plaintext of length 2<sup>16</sup> - the allowed expansion. The maximum length of a protected record plaintext is therefore 2<sup>16</sup> - 2<sup>11</sup> = 63488 octets in TLS 1.2 and 2<sup>16</sup> - 2<sup>8</sup> = 65280 octets in TLS 1.3. Unprotected messages are still subject to the lower default limits in TLS/DTLS 1.3.<a href="#section-3-1" class="pilcrow">¶</a></p>
 <p id="section-3-2">The "super_jumbo_record_size_limit" extension <span class="bcp14">MUST NOT</span> be negotiated together with the "record_size_limit" extension or the "max_fragment_length" extension. A client <span class="bcp14">MUST</span> treat receipt
