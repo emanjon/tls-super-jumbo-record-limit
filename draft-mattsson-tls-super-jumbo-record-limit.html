@@ -1233,7 +1233,12 @@ of "super_jumbo_record_size_limit" together with "record_size_limit" or "max_fra
       <h2 id="name-iana-considerations">
 <a href="#section-6" class="section-number selfRef">6. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
       </h2>
-<p id="section-6-1">This document registers the "super_jumbo_record_size_limit" extension in the "TLS ExtensionType Values" registry established in <span>[<a href="#RFC5246" class="cite xref">RFC5246</a>]</span>. The "super_jumbo_record_size_limit" extension has been assigned a code point of TBD. The IANA registry <span>[<a href="#RFC8447" class="cite xref">RFC8447</a>]</span> [[will list|lists]] this extension as "Recommended" (i.e., "Y") and indicates that it may appear in the ClientHello (CH) or EncryptedExtensions (EE) messages in TLS 1.3 <span>[<a href="#RFC8446" class="cite xref">RFC8446</a>]</span>.<a href="#section-6-1" class="pilcrow">¶</a></p>
+<p id="section-6-1">This document registers the following entry to the "TLS Flags" registry defined in <span>[<a href="#I-D.ietf-tls-tlsflags" class="cite xref">I-D.ietf-tls-tlsflags</a>]</span>:
+   *  Value: TBD1
+   *  Flag Name: large_record_size
+   *  Messages: CH, EE
+   *  Recommended: Y
+   *  Reference: [This document]<a href="#section-6-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <section id="section-7">
