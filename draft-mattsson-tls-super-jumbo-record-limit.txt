@@ -125,10 +125,11 @@ Table of Contents
 
    When the "large_record_size" flag extension is negotiated, an
    endpoint MUST be prepared to accept protected records with
-   ciphertexts of length 2^16 bytes and protected record with plaintext
-   of length 2^16 - the allowed expansion.  The maximum length of a
-   protected record plaintext is therefore 2^16 - 2^8 = 65280 octets.
-   Unprotected messages are still subject to the lower default limits.
+   ciphertexts of the negotiated length and protected record with
+   plaintext of the negotiated length of - the allowed expansion.  The
+   maximum length of a protected record plaintext that can be negotiated
+   is therefore 2^16 - 2^8 = 65280 octets.  Unprotected messages are
+   still subject to the lower default limits.
 
    The "large_record_size" flag extension MUST be negotiated together
    with the "record_size_limit" extension and MUST NOT be negotiated
