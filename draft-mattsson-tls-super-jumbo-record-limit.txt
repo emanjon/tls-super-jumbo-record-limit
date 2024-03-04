@@ -221,7 +221,8 @@ Table of Contents
 
 Acknowledgments
 
-   Add your name here.
+   The authors would like to thank Benjamin Kaduk for his valuable
+   comments and feedback.
 
 Authors' Addresses
 
