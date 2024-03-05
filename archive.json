@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-03-03T00:40:34.862638+00:00",
+  "timestamp": "2024-03-05T00:38:11.358936+00:00",
   "repo": "emanjon/tls-super-jumbo-record-limit",
   "labels": [
     {
@@ -155,15 +155,15 @@
       "id": "I_kwDOLXcmPc6BBPny",
       "title": "RFC 8449 negotiates plaintext length, not ciphertext",
       "url": "https://github.com/emanjon/tls-super-jumbo-record-limit/issues/5",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "emanjon",
       "authorAssociation": "OWNER",
       "assignees": [],
       "labels": [],
       "body": "Ben Kaduk wrote:\r\n\r\nI also note that the semantics of record_size_limit per RFC 8449 are to\r\napply to the plaintext length, so I think it actually is weird and\r\noverly complicated for your draft to propose that the negotiated length\r\nwill now be of the ciphertext length.",
       "createdAt": "2024-03-02T04:59:22Z",
-      "updatedAt": "2024-03-02T04:59:22Z",
-      "closedAt": null,
+      "updatedAt": "2024-03-04T19:56:42Z",
+      "closedAt": "2024-03-04T19:56:42Z",
       "comments": []
     }
   ],
@@ -192,6 +192,34 @@
       "mergedBy": "emanjon",
       "mergeCommit": {
         "oid": "cf12fed1976172652583c0648a16c8fe22b5a8ed"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 6,
+      "id": "PR_kwDOLXcmPc5okVCI",
+      "title": "Limit the maximum plaintext record size to 2^16-257",
+      "url": "https://github.com/emanjon/tls-super-jumbo-record-limit/pull/6",
+      "state": "MERGED",
+      "author": "tuexen",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "This results in a maximum ciphertext record size of 2^16-257+255+1, which is 2^16-1. This is the largest value, which can be encoded in a 16 bit length field.",
+      "createdAt": "2024-03-04T09:54:45Z",
+      "updatedAt": "2024-03-04T19:56:41Z",
+      "baseRepository": "emanjon/tls-super-jumbo-record-limit",
+      "baseRefName": "main",
+      "baseRefOid": "af5a0fa0392de9a1308a0b5f86ef6097c8842cf1",
+      "headRepository": "emanjon/tls-super-jumbo-record-limit",
+      "headRefName": "use-plaintext-length",
+      "headRefOid": "a17e4b5ea8bb435f95f627b53f9cc9b43db2e771",
+      "closedAt": "2024-03-04T19:56:41Z",
+      "mergedAt": "2024-03-04T19:56:41Z",
+      "mergedBy": "emanjon",
+      "mergeCommit": {
+        "oid": "20eb88d6f8d3e770a806ae462e7279b93c4e70a0"
       },
       "comments": [],
       "reviews": []
